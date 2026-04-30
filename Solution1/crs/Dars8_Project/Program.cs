@@ -1,4 +1,7 @@
 
+using Dars8_Project.Repositories;
+using Dars8_Project.Services;
+
 namespace Dars8_Project
 {
     public class Program
@@ -7,18 +10,30 @@ namespace Dars8_Project
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
+            // 1. SERVICES (Dependency Injection) qismi
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Connection String-ni appsettings.json-dan yoki to'g'ridan-to'g'ri shu yerdan olish
+            // Eslatma: O'zingizning baza nomingizni tekshiring (Database=SchoolDB)
+            string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+                                      ?? "Server=.; Database=SchoolDB; Trusted_Connection=True; TrustServerCertificate=True;";
+
+            // Repository-larni ro'yxatdan o'tkazish (Scoped - har bir so'rov uchun yangi obyekt)
+            builder.Services.AddScoped<IStudentRepository>(x => new StudentRepository(connectionString));
+            builder.Services.AddScoped<ITeacherRepository>(x => new TeacherRepository(connectionString));
+
+            // Servislarni ro'yxatdan o'tkazish
+            builder.Services.AddScoped<IStudentService, StudentService>();
+            builder.Services.AddScoped<ITeacherService, TeacherService>();
+
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // 2. MIDDLEWARE (Pipeline) qismi
             if (app.Environment.IsDevelopment())
             {
+                // Swagger faqat dev rejimda ishlaydi
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
@@ -27,10 +42,10 @@ namespace Dars8_Project
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();
         }
-    }
+    }   
 }
+
