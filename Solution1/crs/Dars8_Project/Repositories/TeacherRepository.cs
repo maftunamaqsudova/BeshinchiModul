@@ -26,14 +26,14 @@ namespace Dars8_Project.Repositories
             };
 
             // SQL-da 'sp_AddTeacher' protsedurasi bor deb hisoblaymiz
-            return await connection.ExecuteScalarAsync<long>("sp_AddTeacher", parameters,
+            return await connection.ExecuteScalarAsync<long>("AddTeacher", parameters,
                 commandType: CommandType.StoredProcedure);
         }
 
         public async Task<TeacherGetDto> GetByIdAsync(long id)
         {
             using var connection = new SqlConnection(_connectionString);
-            return await connection.QueryFirstOrDefaultAsync<TeacherGetDto>("sp_GetTeacherById",
+            return await connection.QueryFirstOrDefaultAsync<TeacherGetDto>("GetTeacherById",
                 new { TeacherId = id },
                 commandType: CommandType.StoredProcedure);
         }
@@ -41,7 +41,7 @@ namespace Dars8_Project.Repositories
         public async Task<IEnumerable<TeacherGetDto>> GetAllAsync()
         {
             using var connection = new SqlConnection(_connectionString);
-            return await connection.QueryAsync<TeacherGetDto>("sp_GetAllTeachers",
+            return await connection.QueryAsync<TeacherGetDto>("GetAllTeachers",
                 commandType: CommandType.StoredProcedure);
         }
 
@@ -56,7 +56,7 @@ namespace Dars8_Project.Repositories
                 Subject = teacherDto.Subject
             };
 
-            var rowsAffected = await connection.ExecuteAsync("sp_UpdateTeacher", parameters,
+            var rowsAffected = await connection.ExecuteAsync("UpdateTeacher", parameters,
                 commandType: CommandType.StoredProcedure);
             return rowsAffected > 0;
         }
@@ -64,7 +64,7 @@ namespace Dars8_Project.Repositories
         public async Task<bool> DeleteAsync(long id)
         {
             using var connection = new SqlConnection(_connectionString);
-            var rowsAffected = await connection.ExecuteAsync("sp_DeleteTeacher",
+            var rowsAffected = await connection.ExecuteAsync("DeleteTeacher",
                 new { TeacherId = id },
                 commandType: CommandType.StoredProcedure);
             return rowsAffected > 0;

@@ -24,10 +24,12 @@ namespace Dars8_Project.Services
             public async Task<IEnumerable<StudentGetDto>> GetAllStudentsAsync() =>
                 await _repository.GetAllAsync();
 
-            public async Task<StudentGetDto> GetStudentByIdAsync(long id) =>
-                await _repository.GetByIdAsync(id);
+        public async Task<StudentGetDto> GetStudentByIdAsync(long id)
+        {
+            return await _repository.GetByIdAsync(id);
+        }
 
-            public async Task<bool> UpdateStudentAsync(long id, StudentCreateDto dto) =>
+        public async Task<bool> UpdateStudentAsync(long id, StudentCreateDto dto) =>
                 await _repository.UpdateAsync(id, dto);
 
             public async Task<bool> DeleteStudentAsync(long id) =>

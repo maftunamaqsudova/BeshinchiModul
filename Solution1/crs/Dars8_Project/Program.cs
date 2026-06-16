@@ -18,7 +18,7 @@ namespace Dars8_Project
             // Connection String-ni appsettings.json-dan yoki to'g'ridan-to'g'ri shu yerdan olish
             // Eslatma: O'zingizning baza nomingizni tekshiring (Database=SchoolDB)
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-                                      ?? "Server=.; Database=SchoolDB; Trusted_Connection=True; TrustServerCertificate=True;";
+                                      ?? "Server=.; Database=Project; Trusted_Connection=True; TrustServerCertificate=True;";
 
             // Repository-larni ro'yxatdan o'tkazish (Scoped - har bir so'rov uchun yangi obyekt)
             builder.Services.AddScoped<IStudentRepository>(x => new StudentRepository(connectionString));

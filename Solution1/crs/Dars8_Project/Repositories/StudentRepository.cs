@@ -32,7 +32,7 @@ namespace Dars8_Project.Repositories
         public async Task<bool> DeleteAsync(long id)
         {
             using var connection = new SqlConnection(_connectionString);
-            var rowsAffected = await connection.ExecuteAsync("sp_DeleteStudent",
+            var rowsAffected = await connection.ExecuteAsync("DeleteStudent",
                 new { StudentId = id },
                 commandType: CommandType.StoredProcedure);
             return rowsAffected > 0;
@@ -41,14 +41,14 @@ namespace Dars8_Project.Repositories
         public async Task<IEnumerable<StudentGetDto>> GetAllAsync()
         {
             using var connection = new SqlConnection(_connectionString);
-            return await connection.QueryAsync<StudentGetDto>("sp_GetAllStudents",
+            return await connection.QueryAsync<StudentGetDto>("GetAllStudents",
                 commandType: CommandType.StoredProcedure);
         }
 
         public async Task<StudentGetDto>? GetByIdAsync(long id)
         {
             using var connection = new SqlConnection(_connectionString);
-            return await connection.QueryFirstOrDefaultAsync<StudentGetDto>("sp_GetStudentById",
+            return await connection.QueryFirstOrDefaultAsync<StudentGetDto>("GetStudentById",
                 new { StudentId = id },
                 commandType: CommandType.StoredProcedure);
         }
@@ -65,7 +65,7 @@ namespace Dars8_Project.Repositories
                 studentDto.Grade
             };
 
-            var rowsAffected = await connection.ExecuteAsync("sp_UpdateStudent", parameters,
+            var rowsAffected = await connection.ExecuteAsync("UpdateStudent", parameters,
                 commandType: CommandType.StoredProcedure);
             return rowsAffected > 0;
         }
